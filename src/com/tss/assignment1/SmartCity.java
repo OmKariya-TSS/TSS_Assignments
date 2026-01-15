@@ -35,7 +35,7 @@ public class SmartCity {
                 break;
             default:
                 System.out.println("enter number between 1 to 4");
-                break;
+                smartCity();
         }
     }
     public static void electric_method(){
@@ -52,9 +52,9 @@ public class SmartCity {
         int fixed_charge_industrial = 500;
         switch(electricity){
             case 1:
+                String connection = "domestic";
                 System.out.println("you are under domestic");
-                System.out.println("Enter units consumed : ");
-                int unites_consumed = scanner.nextInt();
+                int unites_consumed = ask_units();
                 if(unites_consumed>=0 && unites_consumed<=100){
                     energy_charge =(double) energy_charge + unites_consumed*2;
                 }
@@ -65,22 +65,24 @@ public class SmartCity {
                     energy_charge =(double) energy_charge + unites_consumed*5;
                 }
                 bill_amount=(double) energy_charge+ fixed_charge_domestic;
-                System.out.println("connection type : domestic connection");
-                System.out.println("Units consumed : "+ unites_consumed);
-                System.out.println("Energy charge : "+energy_charge);
-                System.out.println("fixed charge : "+fixed_charge_domestic);
+//                System.out.println("connection type : domestic connection");
+//                System.out.println("Units consumed : "+ unites_consumed);
+//                System.out.println("Energy charge : "+energy_charge);
+//                System.out.println("fixed charge : "+fixed_charge_domestic);
+                double surcharge=0;
                 if(bill_amount>=2000){
-                    double surcharge = bill_amount*10/100;
+                    surcharge = bill_amount*10/100;
                     bill_amount=bill_amount+ surcharge;
                     System.out.println("surcharge :"+surcharge);
                 }
-                System.out.println("total bill  "+bill_amount);
+                printElectricityBill(connection,unites_consumed,energy_charge,fixed_charge_domestic,surcharge,bill_amount);
+//                System.out.println("total bill  "+bill_amount);
                 smartCity();
                 break;
             case 2:
+                connection = "commericial";
                 System.out.println("you are under commercial");
-                System.out.println("Enter units consumed : ");
-                unites_consumed = scanner.nextInt();
+                unites_consumed = ask_units();
                 if(unites_consumed>=0 && unites_consumed<=200){
                     energy_charge =(double) energy_charge + unites_consumed*5;
                 }
@@ -90,31 +92,34 @@ public class SmartCity {
                 else if(unites_consumed>=501){
                     energy_charge = (double) energy_charge + unites_consumed*10;
                 }
+                surcharge =0;
                 bill_amount=(double)  energy_charge+fixed_charge_commercial;
-                System.out.println("connection type : commercial connection");
-                System.out.println("Units consumed : "+ unites_consumed);
-                System.out.println("Energy charge : "+energy_charge);
-                System.out.println("fixed charge : "+fixed_charge_commercial);
-                System.out.println("total bill  "+bill_amount);
+//                System.out.println("connection type : commercial connection");
+//                System.out.println("Units consumed : "+ unites_consumed);
+//                System.out.println("Energy charge : "+energy_charge);
+//                System.out.println("fixed charge : "+fixed_charge_commercial);
+//                System.out.println("total bill  "+bill_amount);
+                printElectricityBill(connection,unites_consumed,energy_charge,fixed_charge_commercial,surcharge,bill_amount);
                 smartCity();
                 break;
             case 3:
+                connection = "industrial";
                 System.out.println("you are under indsutrial");
-                System.out.println("Enter units consumed : ");
-                unites_consumed = scanner.nextInt();
+                unites_consumed = ask_units();
                 energy_charge= (double) energy_charge+ unites_consumed*12;
                 bill_amount=(double) energy_charge+fixed_charge_industrial;
 
-                System.out.println("connection type : industrial connection");
-                System.out.println("Units consumed : "+ unites_consumed);
-                System.out.println("Energy charge : "+energy_charge);
-                System.out.println("fixed charge : "+fixed_charge_industrial);
+//                System.out.println("connection type : industrial connection");
+//                System.out.println("Units consumed : "+ unites_consumed);
+//                System.out.println("Energy charge : "+energy_charge);
+//                System.out.println("fixed charge : "+fixed_charge_industrial);
+                double rebate=0;
                 if(unites_consumed>100){
-                    double rebate = bill_amount * 15/100;
+                    rebate = bill_amount * 15/100;
                     bill_amount = bill_amount - rebate;
                     System.out.println("rebate "+rebate);
                 }
-                System.out.println("total bill  "+bill_amount);
+                printElectricityBill(connection,unites_consumed,energy_charge,fixed_charge_industrial,rebate,bill_amount);
                 smartCity();
                 break;
             case 4:
@@ -196,8 +201,7 @@ public class SmartCity {
         switch(internet){
             case 1:
                 System.out.println("you are under student plan");
-                System.out.println("Enter duration : ");
-                duration = scanner.nextInt();
+                duration = ask_duration();
                 switch(duration){
                     case 1:
                         bill_amount = 299;
@@ -217,15 +221,11 @@ public class SmartCity {
                         System.out.println("bill with discount is "+bill_amount);
                         smartCity();
                         break;
-                    default:
-                        System.out.println("duration should be 1 3 or 6 months");
-                        internet_method();
                 }
                 break;
             case 2:
                 System.out.println("you are under home plan");
-                System.out.println("Enter duration : ");
-                duration = scanner.nextInt();
+                duration = ask_duration();
                 switch(duration){
                     case 1:
                         bill_amount = 499;
@@ -245,15 +245,11 @@ public class SmartCity {
                         System.out.println("bill with discount is "+bill_amount);
                         smartCity();
                         break;
-                    default:
-                        System.out.println("duration should be 1 3 or 6 months");
-                        internet_method();
                 }
                 break;
             case 3:
                 System.out.println("you are under student plan");
-                System.out.println("Enter duration : ");
-                duration = scanner.nextInt();
+                duration = ask_duration();
                 switch(duration){
                     case 1:
                         bill_amount = 999;
@@ -273,9 +269,6 @@ public class SmartCity {
                         System.out.println("bill with discount is "+bill_amount);
                         smartCity();
                         break;
-                    default:
-                        System.out.println("duration should be 1 3 or 6 months");
-                        internet_method();
                 }
                 break;
             case 4:
@@ -287,5 +280,49 @@ public class SmartCity {
                 internet_method();
         }
     }
+    public static int ask_duration() {
+        Scanner scanner = new Scanner(System.in);
+        int dur;
+        while (true) {
+            System.out.println("Enter duration (1, 3, or 6): ");
+            dur = scanner.nextInt();
+            if (dur == 1 || dur == 3 || dur == 6) {
+                return dur;
+            } else {
+                System.out.println("Invalid duration. Please try again.");
+            }
+        }
+    }
+
+    public static int ask_units() {
+        Scanner scanner = new Scanner(System.in);
+        int units;
+        while (true) {
+            System.out.println("Enter units consumed : ");
+            units = scanner.nextInt();
+            if (units >= 0) {
+                return units;
+            } else {
+                System.out.println("Enter only positive units. Try again.");
+            }
+        }
+    }
+    public static void printElectricityBill(
+            String connection,
+            int units_consumed,
+            double energycharge,
+            int fixed_charge,
+            double surchargeOrRebate,
+            double totalbill
+    ){
+        System.out.println("Connection Type :"+connection);
+        System.out.println("Units consumed : "+units_consumed);
+        System.out.println("energy charge : "+energycharge);
+        System.out.println("fixed charge :"+fixed_charge);
+        System.out.println("surcharge or rabate is :"+surchargeOrRebate);
+        System.out.println("total bill is : "+totalbill);
+
+    }
+
 }
 
