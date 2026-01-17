@@ -40,12 +40,12 @@ public class MatrixMenu {
                 matrix(arr1, arr2, r1, c1, r2, c2,add,mul);
                 break;
             case 3:
-                addition(arr1,arr2,r1,c1,r2,c2, add);
+                addition(arr1, arr2, r1, c1, r2, c2, add);
                 System.out.println("matrix is added");
                 matrix(arr1, arr2, r1, c1, r2, c2,add,mul);
                 break;
             case 4:
-                multiplication(arr1,arr2,r1,c1,r2,c2,mul);
+                multiplication(arr1, arr2, r1, c1, r2, c2, mul);
                 System.out.println("multiplication is done");
                 matrix(arr1, arr2, r1, c1, r2, c2,add,mul);
                 break;
@@ -55,10 +55,18 @@ public class MatrixMenu {
                 display(arr1,r1,c1);
                 System.out.println("matrix 2 is");
                 display(arr2,r2,c2);
-                System.out.println("add matrix is :");
-                display(add,r1,c1);
-                System.out.println("multiplication matrix is:");
-                display(mul,r2,c2);
+                if(r1!=r2 && c1!=c2){
+                    System.out.println("you cant add the two matrix with different dimensions");
+                }else {
+                    System.out.println("add matrix is :");
+                    display(add, r1, c1);
+                }
+                if (c1 != r2) {
+                    System.out.println("you cant multiply the matrix");
+                }else {
+                    System.out.println("multiplication matrix is:");
+                    display(mul, r2, c2);
+                }
                 matrix(arr1, arr2, r1, c1, r2, c2,add ,mul );
                 break;
             case 5:
@@ -116,21 +124,14 @@ public class MatrixMenu {
         }
     }
     private static void addition(int[][] arr1,int[][] arr2,int r1,int c1,int r2,int c2,int[][] ans){
-        if(r1!=r2 && c1!=c2){
-            System.out.println("you cant add the two matrix with different dimensions");
-        }else {
             for (int i = 0; i < r1; i++) {
                 for (int j = 0; j < c1; j++) {
                     ans[i][j] = arr1[i][j] + arr2[i][j];
                 }
             }
-        }
     }
     private static void multiplication(int[][] arr1,int[][] arr2,int r1,int r2,int c1,int c2,int[][] ans)
     {
-        if (c1 != r2) {
-            System.out.println("you cant multiply the matrix");
-        } else {
             for (int i = 0; i < r1; i++) {
                 for (int j = 0; j < c2; j++) {
                     for (int k = 0; k < c1; k++) {
@@ -138,8 +139,6 @@ public class MatrixMenu {
                     }
                 }
             }
-        }
-
     }
     private static boolean primeHarmonic(int[][] arr,int r,int c){
         for (int i = 0; i < r; i++) {
