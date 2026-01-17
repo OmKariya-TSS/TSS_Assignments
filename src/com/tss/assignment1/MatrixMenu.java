@@ -33,12 +33,8 @@ public class MatrixMenu {
         int n = scanner.nextInt();
         switch (n){
             case 1:
-                for(int i = 0; i < r1; i++){
-                    for(int j = 0; j < c2; j++){
-                        mul[i][j] = 0;
-                        add[i][j]=0;
-                    }
-                }
+                reset(add,r1,c1);
+                reset(mul,r1,c2);
                 create(arr1, r1,c1);
                 create(arr2,r2,c2);
                 matrix(arr1, arr2, r1, c1, r2, c2,add,mul);
@@ -200,5 +196,12 @@ public class MatrixMenu {
             }
         }
         return true;
+    }
+    private static void reset(int[][] arr,int r,int c){
+        for(int i = 0; i < r; i++){
+            for(int j = 0; j < c; j++){
+                arr[i][j] = 0;
+            }
+        }
     }
 }
