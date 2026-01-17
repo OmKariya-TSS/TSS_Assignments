@@ -8,6 +8,16 @@ public class SmartCity {
         System.out.println("Welcome to smart city utility control system");
         smartCity();
     }
+    enum PlanType {
+        STUDENT,
+        HOME,
+        BUSINESS
+    }
+    enum WaterType {
+        RESIDENTIAL,
+        SOCIETY,
+        FACTORY
+    }
     public static void smartCity(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter 1 for Electricity service");
@@ -143,41 +153,23 @@ public class SmartCity {
         switch(water_service){
             case 1:
                 System.out.println("you are under residential ");
-                System.out.println("enter number of person : ");
-                int number_of_person = scanner.nextInt();
-                bill_amount = (double) bill_amount + number_of_person * 30;
-                System.out.println("total bill : "+ bill_amount);
-                if(bill_amount>3000){
-                    double tax = bill_amount*8/100;
-                    bill_amount = bill_amount+tax;
-                    System.out.println("total bill with tax is : "+bill_amount);
-                }
+                System.out.println("Enter number of persons:");
+                int persons = scanner.nextInt();
+                printWaterBill(WaterType.RESIDENTIAL, persons);
                 smartCity();
                 break;
             case 2 :
                 System.out.println("you are under society");
                 System.out.println("enter number of tapes : ");
-                int number_of_tapes = scanner.nextInt();
-                bill_amount = (double) bill_amount + number_of_tapes * 25;
-                System.out.println("total bill: "+ bill_amount);
-                if(bill_amount>3000){
-                    double tax = bill_amount*8/100;
-                    bill_amount = bill_amount+tax;
-                    System.out.println("total bill with tax is : "+bill_amount);
-                }
+                int tapes = scanner.nextInt();
+                printWaterBill(WaterType.SOCIETY, tapes);
                 smartCity();
                 break;
             case 3:
                 System.out.println("you are under factory");
-                System.out.println("enter number of machines : ");
-                int number_of_machines = scanner.nextInt();
-                bill_amount =(double) bill_amount + number_of_machines * 100;
-                System.out.println("total bill : "+ bill_amount);
-                if(bill_amount>3000){
-                    double tax = bill_amount*8/100;
-                    bill_amount = bill_amount+tax;
-                    System.out.println("total bill with tax is : "+bill_amount);
-                }
+                System.out.println("Enter number of machines:");
+                int machines = scanner.nextInt();
+                printWaterBill(WaterType.FACTORY, machines);
                 smartCity();
                 break;
             case 4:
@@ -202,74 +194,20 @@ public class SmartCity {
             case 1:
                 System.out.println("you are under student plan");
                 duration = ask_duration();
-                switch(duration){
-                    case 1:
-                        bill_amount = 299;
-                        System.out.println("bill is "+bill_amount);
-                        smartCity();
-                        break;
-                    case 3:
-                        bill_amount = 799;
-                        System.out.println("bill is "+bill_amount);
-                        smartCity();
-                        break;
-                    case 6:
-                        bill_amount = 1499;
-                        System.out.println("bill without discount is "+bill_amount);
-                        double discount = bill_amount * 5/100;
-                        bill_amount = bill_amount - discount;
-                        System.out.println("bill with discount is "+bill_amount);
-                        smartCity();
-                        break;
-                }
+                printInternetBill(PlanType.STUDENT, duration);
+                smartCity();
                 break;
             case 2:
                 System.out.println("you are under home plan");
                 duration = ask_duration();
-                switch(duration){
-                    case 1:
-                        bill_amount = 499;
-                        System.out.println("bill is "+bill_amount);
-                        smartCity();
-                        break;
-                    case 3:
-                        bill_amount = 1399;
-                        System.out.println("bill is "+bill_amount);
-                        smartCity();
-                        break;
-                    case 6:
-                        bill_amount = 2699;
-                        System.out.println("bill without discount is "+bill_amount);
-                        double discount = bill_amount * 5/100;
-                        bill_amount = bill_amount - discount;
-                        System.out.println("bill with discount is "+bill_amount);
-                        smartCity();
-                        break;
-                }
+                printInternetBill(PlanType.HOME, duration);
+                smartCity();
                 break;
             case 3:
-                System.out.println("you are under student plan");
+                System.out.println("you are under business plan");
                 duration = ask_duration();
-                switch(duration){
-                    case 1:
-                        bill_amount = 999;
-                        System.out.println("bill is "+bill_amount);
-                        smartCity();
-                        break;
-                    case 3:
-                        bill_amount = 2799;
-                        System.out.println("bill is "+bill_amount);
-                        smartCity();
-                        break;
-                    case 6:
-                        bill_amount = 5499;
-                        System.out.println("bill without discount is "+bill_amount);
-                        double discount = bill_amount * 5/100;
-                        bill_amount = bill_amount - discount;
-                        System.out.println("bill with discount is "+bill_amount);
-                        smartCity();
-                        break;
-                }
+                printInternetBill(PlanType.HOME, duration);
+                smartCity();
                 break;
             case 4:
                 System.out.println("returning back to main menu");
@@ -321,8 +259,53 @@ public class SmartCity {
         System.out.println("fixed charge :"+fixed_charge);
         System.out.println("surcharge or rabate is :"+surchargeOrRebate);
         System.out.println("total bill is : "+totalbill);
-
     }
-
+    public static void printInternetBill(PlanType plan, int duration) {
+        double billAmount = 0;
+        switch (plan) {
+            case STUDENT:
+                if (duration == 1) billAmount = 299;
+                else if (duration == 3) billAmount = 799;
+                else if (duration == 6) billAmount = 1499;
+                break;
+            case HOME:
+                if (duration == 1) billAmount = 499;
+                else if (duration == 3) billAmount = 1399;
+                else if (duration == 6) billAmount = 2699;
+                break;
+            case BUSINESS:
+                if (duration == 1) billAmount = 999;
+                else if (duration == 3) billAmount = 2799;
+                else if (duration == 6) billAmount = 5499;
+                break;
+        }
+        if (duration == 6) {
+            System.out.println("Bill without discount: " + billAmount);
+            double discount = billAmount * 0.05;
+            billAmount -= discount;
+            System.out.println("Bill with discount: " + billAmount);
+        } else {
+            System.out.println("Bill is: " + billAmount);
+        }
+    }
+    public static void printWaterBill(WaterType type, int quantity) {
+        double billAmount = 0;
+        switch(type) {
+            case RESIDENTIAL:
+                billAmount = quantity * 30;
+                break;
+            case SOCIETY:
+                billAmount = quantity * 25;
+                break;
+            case FACTORY:
+                billAmount = quantity * 100;
+                break;
+        }
+        System.out.println("Total bill: " + billAmount);
+        if (billAmount > 3000) {
+            double tax = billAmount * 0.08;
+            billAmount += tax;
+            System.out.println("Total bill with tax: " + billAmount);
+        }
+    }
 }
-
